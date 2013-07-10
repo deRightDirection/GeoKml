@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoKmlLibrary", "GeoKmlLibrary\GeoKmlLibrary.csproj", "{1904CFCF-F9D2-4184-9011-2DA73F1D4D7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoKmlLibrary.UnitTests", "GeoKmlLibrary.UnitTests\GeoKmlLibrary.UnitTests.csproj", "{AC7AE338-7A46-4C87-97B2-E429562114EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1904CFCF-F9D2-4184-9011-2DA73F1D4D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1904CFCF-F9D2-4184-9011-2DA73F1D4D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1904CFCF-F9D2-4184-9011-2DA73F1D4D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1904CFCF-F9D2-4184-9011-2DA73F1D4D7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7AE338-7A46-4C87-97B2-E429562114EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7AE338-7A46-4C87-97B2-E429562114EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7AE338-7A46-4C87-97B2-E429562114EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7AE338-7A46-4C87-97B2-E429562114EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
