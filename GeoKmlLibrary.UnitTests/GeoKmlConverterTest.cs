@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Spatial;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using System.Linq;
 namespace GeoKmlLibrary.UnitTests
 {
     [TestClass]
     public class GeoKmlConverterTest
     {
+        private GeoKmlConverter _kmlConverter;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _kmlConverter = new GeoKmlConverter();
+        }
+
         [TestMethod]
         public void ConvertToKml()
         {
@@ -28,5 +35,26 @@ namespace GeoKmlLibrary.UnitTests
             var xml = converter.ConvertToGeoKml<List<TestObject>>(objects);
             StringAssert.StartsWith(xml, "<?xml");
         }
+
+        [TestMethod]
+        public void ReadLocationsFromDatabase()
+        {
+            var entities = new TestDatabaseEntities();
+            var locations = entities.Locations.AsEnumerable();
+            Assert.AreEqual(9, locations.Count());
+        }
+
+        [TestMethod]
+        public void ConvertOneLocation()
+        {
+            var entities = new TestDatabaseEntities();
+            var locations = entities.Locations.AsEnumerable();
+            var location = locations.First();
+            var xml = _kmlConverter.ConvertToGeoKml<Locations>(location);
+            var expected = "<coordinates>53.2086992259963,6.56771600246429</coordinates>";
+            StringAssert.Contains(xml, expected);
+
+        }
+
     }
 }

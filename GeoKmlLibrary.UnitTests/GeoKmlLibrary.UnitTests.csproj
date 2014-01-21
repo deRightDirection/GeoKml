@@ -35,8 +35,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpKml">
+      <HintPath>..\packages\SharpKml.Core.2.0.0\lib\portable-net4+sl5+wp8+win8\SharpKml.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -52,6 +65,25 @@
   </Choose>
   <ItemGroup>
     <Compile Include="GeoUtils.cs" />
+    <Compile Include="LocationPartial.cs" />
+    <Compile Include="Locations.cs">
+      <DependentUpon>TestDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestDatabase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestDatabase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestDatabase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestDatabase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestDatabase.edmx</DependentUpon>
+    </Compile>
     <Compile Include="TestObject.cs" />
     <Compile Include="GeoKmlConverterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +93,30 @@
       <Project>{1904cfcf-f9d2-4184-9011-2da73f1d4d7b}</Project>
       <Name>GeoKmlLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <EntityDeploy Include="TestDatabase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TestDatabase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="TestDatabase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TestDatabase.edmx</DependentUpon>
+      <LastGenOutput>TestDatabase.Context.cs</LastGenOutput>
+    </None>
+    <None Include="TestDatabase.edmx.diagram">
+      <DependentUpon>TestDatabase.edmx</DependentUpon>
+    </None>
+    <None Include="TestDatabase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TestDatabase.edmx</DependentUpon>
+      <LastGenOutput>TestDatabase.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

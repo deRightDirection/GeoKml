@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpKml.Base;
 using SharpKml.Dom;
-using System.Data.Spatial;
 using System.Reflection;
+using System.Data.Entity.Spatial;
 
 namespace GeoKmlLibrary
 {
