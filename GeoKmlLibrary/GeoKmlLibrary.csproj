@@ -25,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -43,9 +44,6 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="SharpKml">
-      <HintPath>..\packages\SharpKml.Core.2.0.0\lib\portable-net4+sl5+wp8+win8\SharpKml.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -57,11 +55,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeoKmlConverter.cs" />
+    <Compile Include="GeoKmlStyleAttribute.cs" />
     <Compile Include="GeoKmlDescriptionAttribute.cs" />
     <Compile Include="GeoKmlException.cs" />
     <Compile Include="GeoKmlTitleAttribute.cs" />
     <Compile Include="GeoKmlGeometryAttribute.cs" />
+    <Compile Include="GeoLocation.cs" />
     <Compile Include="GeoUtils.cs" />
+    <Compile Include="IKml.cs" />
+    <Compile Include="Kml\Feature.cs" />
+    <Compile Include="Kml\Geometry\Geometry.cs" />
+    <Compile Include="Kml\Geometry\GeometryType.cs" />
+    <Compile Include="Kml\Geometry\IGeometry.cs" />
+    <Compile Include="Kml\IFeature.cs" />
+    <Compile Include="Kml\Symbol\PictureMarkerSymbol.cs" />
+    <Compile Include="Kml\Symbol\ISymbol.cs" />
+    <Compile Include="Kml\MapLayer.cs" />
+    <Compile Include="Kml\Geometry\Point.cs" />
+    <Compile Include="Kml\Symbol\Symbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

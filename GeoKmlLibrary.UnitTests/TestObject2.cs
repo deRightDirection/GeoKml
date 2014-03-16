@@ -11,11 +11,16 @@ namespace GeoKmlLibrary.UnitTests
     [GeoKmlDescription("TestAsDescription")]
     [GeoKmlGeometry("TestAsGeometry")]
     [GeoKmlSymbol("TestAsStyle")]
-    public class TestObject
+    public class TestObject2
     {
         public DbGeography TestAsGeometry { get; set; }
         public string TestAsDescription { get; set; }
         public string TestAsTitle { get; set; }
-        public string TestAsStyle { get; set; }
+        public StyleName TestAsStyle { get; set; }
+    }
+
+    public enum StyleName
+    {
+        Urszula
     }
 }

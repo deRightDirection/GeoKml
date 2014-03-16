@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharpKml.Base;
-using SharpKml.Dom;
 using System.Reflection;
 using System.Data.Entity.Spatial;
+using GeoKmlLibrary.Kml.Symbol;
+using GeoKmlLibrary.Kml;
+using GeoKmlLibrary.Kml.Geometry;
 
 namespace GeoKmlLibrary
 {
@@ -28,45 +29,106 @@ namespace GeoKmlLibrary
         /// <returns>
         /// kml as xml-structure
         /// </returns>
-        public string ConvertToGeoKml<T>(T objectToConvert)
+        public string ConvertToGeoKml<T>(T objectToConvert, IEnumerable<ISymbol> styles = null)
         {
-            Kml kml = new Kml();
+            var mapLayer = new MapLayer();;
             var typeToConvert = objectToConvert.GetType();
             var typeIsFromList = GetTypeOfList(typeToConvert);
             if (typeIsFromList != null)
             {
-                Folder folder = CreateKmlFolder<T>(objectToConvert);
-                kml.Feature = folder;
-            }
+                AddFeatures<T>(mapLayer, objectToConvert);
+            }   
             else
             {
-                Placemark placeMark = CreatePlaceMark(objectToConvert);
-                kml.Feature = placeMark;
+                AddFeature(mapLayer, objectToConvert);
             }
-            Serializer serializer = new Serializer();
-            serializer.Serialize(kml);
-            return serializer.Xml;
+            if (styles != null)
+            {
+                styles.ToList().ForEach(s => mapLayer.Symbols.Add(s));
+            }
+            return mapLayer.ToKml();
         }
 
-        private Folder CreateKmlFolder<T>(T objectToConvert)
+        private void AddFeatures<T>(MapLayer mapLayer, T objectToConvert)
         {
-            var folder = new Folder();
             var list = objectToConvert as IEnumerable;
             foreach (var item in list)
             {
-                var placeMark = CreatePlaceMark(item);
-                folder.AddFeature(placeMark);
+                AddFeature(mapLayer, item);
             }
-            return folder;
         }
 
-        private Placemark CreatePlaceMark(object objectToConvert)
+        private void AddFeature(MapLayer mapLayer, object objectToConvert)
         {
-            Placemark place = new Placemark();
-            place.Description = GetDescription(objectToConvert);
-            place.Geometry = GetGeometry(objectToConvert);
-            place.Name = GetTitle(objectToConvert); 
-            return place;
+            var feature = new Feature();
+            feature.Description = GetDescription(objectToConvert);
+            feature.Geometry = GetGeometry(objectToConvert);
+            feature.Name = GetTitle(objectToConvert);
+            var styleUrl = GetStyleUrl(objectToConvert);
+            if (!string.IsNullOrEmpty(styleUrl))
+            {
+                feature.SymbolName = styleUrl;
+            }
+            mapLayer.Features.Add(feature);
+        }
+
+        private string GetStyleUrl(object objectToConvert)
+        {
+            Type type = objectToConvert.GetType();
+            string styleClassAttributePropertyName = GetAttributePropertyName<GeoKmlSymbolAttribute>(type);
+            foreach (var property in type.GetProperties())
+            {
+                var geoKmlStyleAttribute = property.GetCustomAttribute<GeoKmlSymbolAttribute>();
+                if (geoKmlStyleAttribute != null)
+                {
+                    if (property.PropertyType == typeof(string))
+                    {
+                        var result = property.GetValue(objectToConvert) as string;
+                        if (string.IsNullOrEmpty(result))
+                        {
+                            return null;
+                        }
+                        return result.ToLowerInvariant();
+                    }
+                    if(property.PropertyType.IsEnum)
+                    {
+                        var result = property.GetValue(objectToConvert).ToString();
+                        if (string.IsNullOrEmpty(result))
+                        {
+                            return null;
+                        }
+                        return result.ToLowerInvariant();
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(styleClassAttributePropertyName))
+                    {
+                        if (string.Equals(styleClassAttributePropertyName, property.Name, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (property.PropertyType == typeof(string))
+                            {
+                                var result = property.GetValue(objectToConvert) as string;
+                                if(string.IsNullOrEmpty(result))
+                                {
+                                    return null;
+                                }
+                                return result.ToLowerInvariant();
+                            }
+                            if (property.PropertyType.IsEnum)
+                            {
+                                var result = property.GetValue(objectToConvert).ToString();
+                                if(string.IsNullOrEmpty(result))
+                                {
+                                    return null;
+                                }
+                                return result.ToLowerInvariant();
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         private string GetTitle(object objectToConvert)
@@ -106,9 +168,8 @@ namespace GeoKmlLibrary
             return title;
         }
 
-        private Description GetDescription(object objectToConvert)
+        private string GetDescription(object objectToConvert)
         {
-            var description = new Description();
             Type type = objectToConvert.GetType();
             string geometryClassAttributePropertyName = GetAttributePropertyName<GeoKmlDescriptionAttribute>(type);
             foreach (var property in type.GetProperties())
@@ -118,7 +179,7 @@ namespace GeoKmlLibrary
                 {
                     if (property.PropertyType == typeof(string))
                     {
-                        description.Text = property.GetValue(objectToConvert) as string;
+                        return property.GetValue(objectToConvert) as string;
                     }
                     else
                     {
@@ -131,22 +192,17 @@ namespace GeoKmlLibrary
                     {
                         if (string.Equals(geometryClassAttributePropertyName, property.Name, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            description.Text = property.GetValue(objectToConvert) as string;
+                            return property.GetValue(objectToConvert) as string;
                         }
                     }
                 }
             }
-            if (string.IsNullOrEmpty(description.Text))
-            {
-                throw new GeoKmlException("Object doesn't have string property with GeoKmlDescription attribute");
-            }
-            return description;
+            throw new GeoKmlException("Object doesn't have string property with GeoKmlDescription attribute");
         }
 
-        private Point GetGeometry(object objectToConvert)
+        private IGeometry GetGeometry(object objectToConvert)
         {
             Type type = objectToConvert.GetType();
-            Point point = null;
             DbGeography location = null;
             string geometryClassAttributePropertyName = GetAttributePropertyName<GeoKmlGeometryAttribute>(type);
             foreach (var property in type.GetProperties())
@@ -176,17 +232,16 @@ namespace GeoKmlLibrary
             }
             if (location != null)
             {
-                Vector vector = new Vector();
-                vector.Latitude = location.Latitude.Value;
-                vector.Longitude = location.Longitude.Value;
-                point = new Point();
-                point.Coordinate = vector;
+                var typename = location.SpatialTypeName;
+                if (typename.Equals("Point"))
+                {
+                    var point  = new Point();
+                    point.Latitude = location.Latitude.Value;
+                    point.Longitude = location.Longitude.Value;
+                    return point;
+                }
             }
-            if (point == null)
-            {
-                throw new GeoKmlException("Object doesn't have geometry property with GeoKmlGeometry attribute");
-            }
-            return point;
+            throw new GeoKmlException("Object doesn't have geometry property with GeoKmlGeometry attribute");
         }
 
         private string GetAttributePropertyName<T>(Type type) where T:Attribute

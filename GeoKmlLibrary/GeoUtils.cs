@@ -23,5 +23,13 @@ namespace GeoKmlLibrary
             var text = string.Format("POINT({0} {1})", lon, lat);
             return DbGeography.PointFromText(text, 4326);
         }
+
+        public static GeoLocation CreatePoint(DbGeography location)
+        {
+            var geoLocation = new GeoLocation();
+            geoLocation.Latitude = location.Latitude.Value;
+            geoLocation.Longitude = location.Longitude.Value;
+            return geoLocation;
+        }
     }
 }
