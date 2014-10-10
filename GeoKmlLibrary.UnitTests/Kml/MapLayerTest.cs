@@ -19,7 +19,7 @@ namespace GeoKmlLibrary.UnitTests.Kml
             var feature = new Feature();
             feature.Description = "Mannus";
             feature.Geometry = new Point(10.1, 10.3);
-            feature.Name = "Urszula";
+            feature.Name = "Stefania";
             feature.SymbolName = "Test";
             var mapLayer = new MapLayer();
             mapLayer.Symbols.Add(symbol);

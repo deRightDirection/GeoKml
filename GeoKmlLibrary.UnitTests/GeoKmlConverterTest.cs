@@ -21,32 +21,32 @@ namespace GeoKmlLibrary.UnitTests
         public void ConvertToKml_With_Style_And_Definitions()
         {
             var style = new PictureMarkerSymbol();
-            style.Name = "Urszula";
+            style.Name = "Stefania";
             style.IconUri = "http://www.basketbalnieuws.nl/kml/supermarket.png";
             style.Scale = 1.1;
-            var testObject = new TestObject() { TestAsDescription = "Description", TestAsTitle = "Title", TestAsGeometry = GeoUtils.CreatePoint(52.574047699999994, 6.285734400000001), TestAsStyle = "Urszula" };
+            var testObject = new TestObject() { TestAsDescription = "Description", TestAsTitle = "Title", TestAsGeometry = GeoUtils.CreatePoint(52.574047699999994, 6.285734400000001), TestAsStyle = "Stefania" };
             GeoKmlConverter converter = new GeoKmlConverter();
             var xml = converter.ConvertToGeoKml<TestObject>(testObject, new List<ISymbol>() { style });
-            xml.Should().Contain("#urszula");
+            xml.Should().Contain("#stefania");
         }
 
 
         [TestMethod]
         public void ConvertToKml_With_Style()
         {
-            var testObject = new TestObject() { TestAsDescription = "Description", TestAsTitle = "Title", TestAsGeometry = GeoUtils.CreatePoint(10, 5), TestAsStyle = "Urszula" };
+            var testObject = new TestObject() { TestAsDescription = "Description", TestAsTitle = "Title", TestAsGeometry = GeoUtils.CreatePoint(10, 5), TestAsStyle = "Stefania" };
             GeoKmlConverter converter = new GeoKmlConverter();
             var xml = converter.ConvertToGeoKml<TestObject>(testObject);
-            xml.Should().Contain("#urszula");
+            xml.Should().Contain("#stefania");
         }
 
         [TestMethod]
         public void ConvertToKml_With_Style_From_Enum()
         {
-            var testObject = new TestObject2() { TestAsDescription = "Description", TestAsTitle = "Title", TestAsGeometry = GeoUtils.CreatePoint(10, 5), TestAsStyle = StyleName.Urszula };
+            var testObject = new TestObject2() { TestAsDescription = "Description", TestAsTitle = "Title", TestAsGeometry = GeoUtils.CreatePoint(10, 5), TestAsStyle = StyleName.Stefania };
             GeoKmlConverter converter = new GeoKmlConverter();
             var xml = converter.ConvertToGeoKml<TestObject2>(testObject);
-            xml.Should().Contain("#urszula");
+            xml.Should().Contain("#stefania");
         }
 
         [TestMethod]

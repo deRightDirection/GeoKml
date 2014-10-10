@@ -21,6 +21,6 @@ namespace GeoKmlLibrary.UnitTests
 
     public enum StyleName
     {
-        Urszula
+        Stefania
     }
 }

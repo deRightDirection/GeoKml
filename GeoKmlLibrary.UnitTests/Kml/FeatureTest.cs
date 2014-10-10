@@ -10,12 +10,12 @@ namespace GeoKmlLibrary.UnitTests.Kml
     public class FeatureTest
     {
         [TestMethod]
-        public void ToXml_Is_Correct()
+        public void ToKml_Is_Correct()
         {
             var feature = new Feature();
             feature.Description = "Mannus";
             feature.Geometry = new Point(10.1, 10.3);
-            feature.Name = "Urszula";
+            feature.Name = "Stefania";
             feature.SymbolName = "Test";
             XElement result = feature.ToKml();
             result.Should().HaveElement("name").And

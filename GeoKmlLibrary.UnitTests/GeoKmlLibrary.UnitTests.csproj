@@ -44,7 +44,10 @@
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions">
-      <HintPath>..\..\Ibiza\packages\FluentAssertions.2.2.0.0\lib\net45\FluentAssertions.dll</HintPath>
+      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions.Core">
+      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -98,10 +101,6 @@
     <Compile Include="TestObject2.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ibiza\tRD.Library.Configuration\tRD.Library.Configuration.csproj">
-      <Project>{39086056-b19d-4966-89b9-e5c7e3ad5a68}</Project>
-      <Name>tRD.Library.Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GeoKmlLibrary\GeoKmlLibrary.csproj">
       <Project>{1904cfcf-f9d2-4184-9011-2da73f1d4d7b}</Project>
       <Name>GeoKmlLibrary</Name>
